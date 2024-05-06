@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Country Latitude and Longitude</title>
+</head>
+<body>
+  <label for="countrySelect">Select a country:</label>
+  <select id="countrySelect">
+    <!-- Populate the dropdown with country options -->
+    <option value="USA">USA</option>
+    <option value="Canada">Canada</option>
+    <!-- Add more options as needed -->
+  </select>
+  
+  <!-- Display latitude and longitude -->
+  <div id="latlong"></div>
+  
+  <script>
+    // Function to fetch latitude and longitude based on selected country
+    function getLatLng() {
+      var country = document.getElementById("countrySelect").value;
+      var apiKey = 'YOUR_GOOGLE_MAPS_API_KEY';
+      var url = `https://maps.googleapis.com/maps/api/geocode/json?address=${country}&key=${apiKey}`;
+      
+      // Fetching data from Google Maps Geocoding API
+      fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        var lat = data.results[0].geometry.location.lat;
+        var lng = data.results[0].geometry.location.lng;
+        document.getElementById("latlong").innerText = `Latitude: ${lat}, Longitude: ${lng}`;
+      })
+      .catch(error => console.error('Error:', error));
+    }
+    
+    // Event listener for dropdown change
+    document.getElementById("countrySelect").addEventListener("change", getLatLng);
+  </script>
+</body>
+</html>
